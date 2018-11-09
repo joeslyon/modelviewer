@@ -4,6 +4,11 @@
       <img width="32px" ondragstart="return false;" style="margin-left:2px;margin-top:2px" src="@/assets/icon.png" />
     </div>
     <div class="right div-inline">
+      <el-button @click="help" class="no-drag" size="mini" type="text">
+        <el-tooltip effect="dark" content="使用说明" placement="bottom">
+          <i class="btn el-icon-question"></i>
+        </el-tooltip>
+      </el-button>
       <el-button @click="refresh" class="no-drag" size="mini" type="text">
         <el-tooltip effect="dark" content="刷新页面" placement="bottom">
           <i class="btn my-el-icon-reload"></i>
@@ -28,15 +33,23 @@
         </el-tooltip>
       </el-button>
     </div>
+    <el-dialog :visible.sync="dialogFormVisible" width="80%">
+      <div v-html="docContent"></div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 const { BrowserWindow } = require("electron");
+var fs = require("fs");
+var markdown = require("markdown").markdown;
+
 export default {
   data() {
     return {
       win_normal: true,
+      dialogFormVisible: false,
+      docContent: ""
     };
   },
   props: {
@@ -63,11 +76,11 @@ export default {
     minimize() {
       this.$electron.ipcRenderer.send("ev_minimize");
     },
-    home() {
-      this.$router.push({ name: "home" });
-    },
     refresh() {
       this.$electron.ipcRenderer.send("ev_reload");
+    },
+    help() {
+      this.dialogFormVisible = true;
     }
   },
   created() {
@@ -84,6 +97,17 @@ export default {
         default:
           break;
       }
+    });
+  },
+  mounted() {
+    var that = this;
+    this.$nextTick(function() {
+      fs.readFile("static/help.md", function(err, data) {
+        if (err) {
+          return console.error(err);
+        }
+        that.docContent = markdown.toHTML(data.toString());
+      });
     });
   }
 };
