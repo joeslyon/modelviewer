@@ -4,7 +4,7 @@
       <h1>Three glTF Viewer</h1>
     </div>
     <model-container :fileInfo="fileInfo" @importFile="validateExt" v-if="showCanvas" class="canvas"></model-container>
-    <div v-else  class="drop-container">
+    <div v-else class="drop-container">
       <div ref="dragDiv" :class="['drop-area','dragTarget',{'hover':isHover}]">
         <p>拖拽文件到这里，或者</p>
         <el-button type="primary" icon="el-icon-search" @click="openFile">打开本地文件</el-button>
@@ -15,13 +15,14 @@
 
 <script>
 import ModelContainer from "./ModelContainer";
+import { filters,supportExt } from "@/config/config";
 const { BrowserWindow } = require("electron");
-const ext = [".gltf",".glb", ".dae",".stl",".ply"];
+
 let dragEvent = false;
 let openFileEvent = false;
 
 export default {
-  components:{ModelContainer},
+  components: { ModelContainer },
   data() {
     return {
       showCanvas: false,
@@ -37,13 +38,7 @@ export default {
   methods: {
     openFile() {
       this.$electron.ipcRenderer.send("openFile", {
-        filters: [
-          { name: "glTF", extensions: ["gltf"] },
-           { name: "glTF Binary", extensions: ["glb"] },
-          { name: "Collada", extensions: ["dae"] },
-          { name: "STL Model", extensions: ["stl"] },
-          { name: "PLY Model", extensions: ["ply"] },
-        ]
+        filters
       });
     },
     registDragEvent() {
@@ -87,7 +82,7 @@ export default {
         return;
       }
       var _ext = path.substring(index).toLowerCase();
-      if (!ext.includes(_ext)) {
+      if (!supportExt.includes(_ext)) {
         this.info("指定文件格式不支持");
         return;
       }

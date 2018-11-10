@@ -9,6 +9,11 @@
           <i class="btn el-icon-question"></i>
         </el-tooltip>
       </el-button>
+      <el-button @click="setting" class="no-drag" size="mini" type="text">
+        <el-tooltip effect="dark" content="设置" placement="bottom">
+          <i class="btn el-icon-setting"></i>
+        </el-tooltip>
+      </el-button>
       <el-button @click="refresh" class="no-drag" size="mini" type="text">
         <el-tooltip effect="dark" content="刷新页面" placement="bottom">
           <i class="btn my-el-icon-reload"></i>
@@ -81,7 +86,8 @@ export default {
     },
     help() {
       this.dialogFormVisible = true;
-    }
+    },
+    setting() {}
   },
   created() {
     let that = this;
