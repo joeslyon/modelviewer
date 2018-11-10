@@ -3,7 +3,8 @@
     <div class="header" ondragstart="return false;">
       <h1>Three glTF Viewer</h1>
     </div>
-    <div class="drop-container">
+    <model-container :fileInfo="fileInfo" @importFile="validateExt" v-if="showCanvas" class="canvas"></model-container>
+    <div v-else  class="drop-container">
       <div ref="dragDiv" :class="['drop-area','dragTarget',{'hover':isHover}]">
         <p>拖拽文件到这里，或者</p>
         <el-button type="primary" icon="el-icon-search" @click="openFile">打开本地文件</el-button>
@@ -13,12 +14,14 @@
 </template>
 
 <script>
+import ModelContainer from "./ModelContainer";
 const { BrowserWindow } = require("electron");
-const ext = [".gltf", ".dae"];
+const ext = [".gltf",".glb", ".dae",".stl",".ply"];
 let dragEvent = false;
 let openFileEvent = false;
 
 export default {
+  components:{ModelContainer},
   data() {
     return {
       showCanvas: false,
@@ -36,12 +39,10 @@ export default {
       this.$electron.ipcRenderer.send("openFile", {
         filters: [
           { name: "glTF", extensions: ["gltf"] },
-          { name: "OBJ", extensions: ["obj"] },
+           { name: "glTF Binary", extensions: ["glb"] },
           { name: "Collada", extensions: ["dae"] },
-          { name: "Point Cloud Data", extensions: ["pcd"] },
           { name: "STL Model", extensions: ["stl"] },
           { name: "PLY Model", extensions: ["ply"] },
-          { name: "JSON Model", extensions: ["json"] }
         ]
       });
     },
