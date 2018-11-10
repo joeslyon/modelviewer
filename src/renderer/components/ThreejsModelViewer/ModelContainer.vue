@@ -1,10 +1,13 @@
 <template>
-    <div ref="modelViewer" class="modelViewer dragTarget">
-        <model-collada v-if="current == '.dae'" :src="filePath"></model-collada>
-        <model-gltf v-else-if="current == '.gltf' || current == '.glb'" :src="filePath"></model-gltf>
-        <model-stl v-else-if="current == '.stl'" :src="filePath"></model-stl>
-        <model-ply v-else-if="current == '.ply'" :src="filePath"></model-ply>
-    </div>
+  <div ref="modelViewer" class="modelViewer dragTarget">
+    <model-collada v-if="current == '.dae'" :src="filePath"></model-collada>
+    <model-gltf v-else-if="current == '.gltf' || current == '.glb'" :src="filePath"></model-gltf>
+    <model-stl v-else-if="current == '.stl'" :src="filePath"></model-stl>
+    <model-ply v-else-if="current == '.ply'" :src="filePath"></model-ply>
+    <!-- <model-pcd v-else-if="current == '.pcd'" :src="filePath"></model-pcd> -->
+    <model-obj v-else-if="current == '.obj'" :src="filePath"></model-obj>
+    <!-- <model-draco v-else-if="current == '.drc'" :src="filePath"></model-draco> -->
+  </div>
 </template>
 
 <script>
@@ -12,7 +15,10 @@ import {
   ModelStl,
   ModelPly,
   ModelCollada,
-  ModelGltf
+  ModelGltf,
+  ModelObj,
+  ModelDraco,
+  ModelPcd
 } from "./VueModel";
 
 export default {
@@ -20,7 +26,10 @@ export default {
     ModelStl,
     ModelPly,
     ModelCollada,
-    ModelGltf
+    ModelGltf,
+    ModelObj,
+    ModelDraco,
+    ModelPcd
   },
   props: ["fileInfo"],
   data() {
