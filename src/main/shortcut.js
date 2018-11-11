@@ -16,7 +16,6 @@ export function registerShortcut() {
   });
 
   doRegister("F5", function() {
-    console.log("fired");
     let win = BrowserWindow.getFocusedWindow();
     if (!win) return;
     win.reload();

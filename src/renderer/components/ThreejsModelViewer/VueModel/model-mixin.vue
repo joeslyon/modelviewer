@@ -320,7 +320,7 @@ export default {
         const distance = getSize(object).length();
 
         camera.position.set(0, 0, 0);
-        camera.position.z = distance;
+        camera.position.z = distance * 1.5;
         camera.lookAt(new Vector3());
       } else {
         camera.position.set(

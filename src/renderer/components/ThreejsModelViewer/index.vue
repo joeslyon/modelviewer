@@ -3,7 +3,7 @@
     <div class="header" ondragstart="return false;">
       <h1>Three glTF Viewer</h1>
     </div>
-    <model-container :fileInfo="fileInfo" @importFile="validateExt" v-if="showCanvas" class="canvas"></model-container>
+    <model-container :fileInfo="fileInfo" @importFile="validateExt" v-if="showCanvas"></model-container>
     <div v-else class="drop-container">
       <div ref="dragDiv" :class="['drop-area','dragTarget',{'hover':isHover}]">
         <p>拖拽文件到这里，或者</p>
@@ -15,7 +15,7 @@
 
 <script>
 import ModelContainer from "./ModelContainer";
-import { filters,supportExt } from "@/config/config";
+import { filters, supportExt } from "@/config/config";
 const { BrowserWindow } = require("electron");
 
 let dragEvent = false;
@@ -117,16 +117,12 @@ export default {
 
 .header {
   position: fixed;
-  top: 36px;
   display: flex;
   background: #353535;
-  padding: 0 2em;
+  padding: 0 1em;
   height: 2.5rem;
   line-height: 2.5rem;
   align-items: center;
-  white-space: nowrap;
-  box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.3);
-  z-index: 1;
   width: 100%;
   -webkit-app-region: no-drag;
 }
@@ -163,7 +159,9 @@ export default {
   height: 300px;
   font-size: 1.5rem;
   color: dimgray;
+  min-width: 300px;
   max-width: 500px;
+  width: 50%;
   margin: 0 auto;
   text-align: center;
 }
@@ -173,11 +171,11 @@ export default {
 }
 
 .drop-container {
-  width: 80%;
-  position: relative;
-  top: 50%;
-  margin: 0 auto;
-  margin-top: -150px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: Center;
+  widows: 100%;
 }
 
 .canvas {

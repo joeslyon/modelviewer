@@ -50,6 +50,14 @@ function createWindow() {
     sendMessage("win_state", "unmax");
   });
 
+  mainWindow.on("enter-full-screen", () => {
+    sendMessage("fullscreen", "enter");
+  });
+
+  mainWindow.on("leave-full-screen", () => {
+    sendMessage("fullscreen", "leave");
+  });
+
   registerShortcut();
 }
 
