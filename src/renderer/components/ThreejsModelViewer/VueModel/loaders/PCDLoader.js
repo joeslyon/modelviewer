@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import LoaderUtils from "./LoaderUtils";
+import { LoaderUtils } from "./LoaderUtils";
 /**
  * @author Filipe Caixeta / http://filipecaixeta.com.br
  * @author Mugen87 / https://github.com/Mugen87
@@ -16,7 +16,7 @@ const PCDLoader = function(manager) {
 };
 
 PCDLoader.prototype = {
-  constructor: THREE.PCDLoader,
+  constructor: PCDLoader,
 
   load: function(url, onLoad, onProgress, onError) {
     var scope = this;
@@ -187,9 +187,7 @@ PCDLoader.prototype = {
     // binary
 
     if (PCDheader.data === "binary_compressed") {
-      console.error(
-        "THREE.PCDLoader: binary_compressed files are not supported"
-      );
+      console.error("PCDLoader: binary_compressed files are not supported");
       return;
     }
 
@@ -273,9 +271,8 @@ PCDLoader.prototype = {
       .reverse()
       .join("");
     mesh.name = name;
-
     return mesh;
   }
 };
 
-export {PCDLoader}
+export { PCDLoader };

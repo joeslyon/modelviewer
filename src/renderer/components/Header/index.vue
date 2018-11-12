@@ -9,6 +9,11 @@
           <i class="btn el-icon-question"></i>
         </el-tooltip>
       </el-button>
+      <el-button @click="history" class="no-drag" size="mini" type="text">
+        <el-tooltip effect="dark" content="历史记录" placement="bottom">
+          <i class="btn el-icon-document"></i>
+        </el-tooltip>
+      </el-button>
       <el-button @click="setting" class="no-drag" size="mini" type="text">
         <el-tooltip effect="dark" content="设置" placement="bottom">
           <i class="btn el-icon-setting"></i>
@@ -38,25 +43,16 @@
         </el-tooltip>
       </el-button>
     </div>
-    <el-dialog :visible.sync="dialogFormVisible" width="80%">
-      <div v-html="docContent" class="markdown-body"></div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import "github-markdown-css/github-markdown.css";
 const { BrowserWindow } = require("electron");
-var fs = require("fs");
-var markdown = require("markdown").markdown;
-var path = require("path");
 
 export default {
   data() {
     return {
-      win_normal: true,
-      dialogFormVisible: false,
-      docContent: ""
+      win_normal: true
     };
   },
   props: {
@@ -87,9 +83,14 @@ export default {
       this.$electron.ipcRenderer.send("ev_reload");
     },
     help() {
-      this.dialogFormVisible = true;
+      this.$emit("app-data", { type: "help" });
     },
-    setting() {}
+    history() {
+      this.$emit("app-data", { type: "history" });
+    },
+    setting() {
+      this.$emit("app-data", { type: "setting" });
+    }
   },
   created() {
     let that = this;
@@ -105,21 +106,6 @@ export default {
         default:
           break;
       }
-    });
-  },
-  mounted() {
-    var that = this;
-    this.$nextTick(function() {
-      var filePath = "help/help.md";
-      if (process.env.NODE_ENV !== "development") {
-        filePath = path.join("resources",filePath);
-      }
-      fs.readFile(filePath, function(err, data) {
-        if (err) {
-          return console.error(err);
-        }
-        that.docContent = markdown.toHTML(data.toString());
-      });
     });
   }
 };

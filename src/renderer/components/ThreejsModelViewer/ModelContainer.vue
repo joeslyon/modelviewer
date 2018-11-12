@@ -4,13 +4,15 @@
     <model-gltf v-else-if="current == '.gltf' || current == '.glb'" :src="filePath" @on-load="onload"></model-gltf>
     <model-stl v-else-if="current == '.stl'" :src="filePath" @on-load="onload"></model-stl>
     <model-ply v-else-if="current == '.ply'" :src="filePath" @on-load="onload"></model-ply>
-    <!-- <model-pcd v-else-if="current == '.pcd'" :src="filePath" @on-load="onload"></model-pcd> -->
+    <model-pcd v-else-if="current == '.pcd'" :src="filePath" @on-load="onload"></model-pcd>
     <model-obj v-else-if="current == '.obj'" :src="filePath" @on-load="onload"></model-obj>
     <!-- <model-draco v-else-if="current == '.drc'" :src="filePath" @on-load="onload"></model-draco> -->
+    <markdown-viewer v-else-if="current == '.md'" :src="filePath"></markdown-viewer>
   </div>
 </template>
 
 <script>
+const { BrowserWindow } = require("electron");
 import {
   ModelStl,
   ModelPly,
@@ -18,7 +20,8 @@ import {
   ModelGltf,
   ModelObj,
   ModelDraco,
-  ModelPcd
+  ModelPcd,
+  MarkdownViewer
 } from "./VueModel";
 
 export default {
@@ -29,7 +32,8 @@ export default {
     ModelGltf,
     ModelObj,
     ModelDraco,
-    ModelPcd
+    ModelPcd,
+    MarkdownViewer
   },
   props: ["fileInfo"],
   data() {
@@ -50,7 +54,9 @@ export default {
       this.current = type;
       this.filePath = path;
     },
-    onload(){
+    onload() {},
+    switchModelViewer(type) {
+      this.current = type;
     }
   },
   mounted() {
@@ -65,6 +71,9 @@ export default {
         if (!efile || !efile.path) return;
         that.$emit("importFile", efile.path);
       };
+      that.$electron.ipcRenderer.on("switch-type", (event, { data }) => {
+        that.switchModelViewer(data);
+      });
       that.loadModel(that.fileInfo);
     });
   }

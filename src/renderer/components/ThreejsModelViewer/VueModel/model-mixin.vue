@@ -87,7 +87,7 @@ export default {
       type: Object
     },
     backgroundColor: {
-      default: 0xffffff
+      default: 0x000
     },
     backgroundAlpha: {
       type: Number,
@@ -176,7 +176,7 @@ export default {
     window.removeEventListener("resize", this.onResize, false);
   },
   watch: {
-    src() {
+    src(val) {
       this.load();
     },
     rotation: {

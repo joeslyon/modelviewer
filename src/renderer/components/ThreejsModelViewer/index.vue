@@ -1,11 +1,14 @@
 <template>
   <div class="wrapper">
-    <div class="header" ondragstart="return false;">
+    <div class="header" v-show="showTitle" ondragstart="return false;">
       <h1>Three.js Model Viewer</h1>
     </div>
-    <model-container :fileInfo="fileInfo" @importFile="validateExt" v-if="showCanvas"></model-container>
+    <config-container v-if="appConfig">
+      <button @click="test">ceshi</button>
+    </config-container>
+    <model-container :fileInfo="fileInfo" @importFile="validateExt" v-else-if="showCanvas"></model-container>
     <div v-else class="drop-container">
-      <div ref="dragDiv" :class="['drop-area','dragTarget',{'hover':isHover}]">
+      <div @drop="dropFile" @dragover="dragOver" @dragleave="dragLeave" :class="['drop-area','dragTarget',{'hover':isHover}]">
         <p>拖拽文件到这里，或者</p>
         <el-button type="primary" icon="el-icon-search" @click="openFile">打开本地文件</el-button>
       </div>
@@ -15,25 +18,24 @@
 
 <script>
 import ModelContainer from "./ModelContainer";
-import { filters, supportExt } from "@/config/config";
+import ConfigContainer from "./ConfigContainer";
+import { filters, supportExt, hideModelViewerTitle } from "@/config/config";
 const { BrowserWindow } = require("electron");
+var pathHelper = require("path");
 
 let dragEvent = false;
 let openFileEvent = false;
 
 export default {
-  components: { ModelContainer },
+  components: { ModelContainer, ConfigContainer },
   data() {
     return {
       showCanvas: false,
+      appConfig: false,
       isHover: false,
+      showTitle: true,
       fileInfo: {}
     };
-  },
-  watch: {
-    showCanvas(val, old) {
-      this.registDragEvent();
-    }
   },
   methods: {
     openFile() {
@@ -41,28 +43,16 @@ export default {
         filters
       });
     },
-    registDragEvent() {
-      let that = this;
-      if (dragEvent) return;
-      dragEvent = true;
-      let holder = this.$refs.dragDiv;
-      holder.ondragover = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        that.isHover = true;
-      };
-      holder.ondragleave = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        that.isHover = false;
-      };
-      holder.ondrop = function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        that.isHover = false;
-        var efile = event.dataTransfer.files[0];
-        that.validateExt(efile.path);
-      };
+    test() {
+      this.appConfig = !this.appConfig;
+      if (
+        this.appConfig ||
+        (this.showCanvas && hideModelViewerTitle.includes(this.fileInfo.ext))
+      ) {
+        this.showTitle = false;
+      } else {
+        this.showTitle = true;
+      }
     },
     registOpenFile() {
       let that = this;
@@ -70,34 +60,55 @@ export default {
       openFileEvent = true;
       that.$electron.ipcRenderer.on("open-file", (event, { data }) => {
         if (data && data[0]) {
-          this.validateExt(data[0]);
+          that.validateExt(data[0]);
         }
+      });
+      that.$electron.ipcRenderer.on("app-data", (event, data) => {
+        that.appConfig = true;
+        that.showTitle = false;
       });
     },
     validateExt(path) {
       console.log(path);
-      let index = path.lastIndexOf(".");
-      if (index == -1) {
-        this.info("未识别指定文件格式");
-        return;
-      }
-      var _ext = path.substring(index).toLowerCase();
+      let _ext = pathHelper.extname(path);
+
       if (!supportExt.includes(_ext)) {
         this.info("指定文件格式不支持");
         return;
       }
       this.fileInfo = { ext: _ext, path: path };
       this.showCanvas = true;
+      if (hideModelViewerTitle.includes(_ext)) {
+        this.showTitle = false;
+      } else {
+        this.showTitle = true;
+      }
     },
     info(msg) {
       this.$message({
         showClose: true,
         message: msg
       });
+    },
+    dragOver(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.isHover = true;
+    },
+    dragLeave(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.isHover = false;
+    },
+    dropFile(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.isHover = false;
+      var efile = event.dataTransfer.files[0];
+      this.validateExt(efile.path);
     }
   },
   mounted() {
-    if (!this.showCanvas) this.registDragEvent();
     this.registOpenFile();
   }
 };
@@ -175,7 +186,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: Center;
-  widows: 100%;
 }
 
 .canvas {

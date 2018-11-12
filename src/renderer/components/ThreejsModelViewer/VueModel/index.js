@@ -5,6 +5,7 @@ import ModelGltf from "./model-gltf";
 import ModelPcd from "./model-pcd";
 import ModelObj from "./model-obj";
 import ModelDraco from "./model-draco";
+import MarkdownViewer from "./markdown-viewer";
 
 const components = [
   ModelStl,
@@ -13,7 +14,8 @@ const components = [
   ModelGltf,
   ModelObj,
   ModelDraco,
-  ModelPcd
+  ModelPcd,
+  MarkdownViewer
 ];
 
 const install = Vue => {
@@ -34,7 +36,8 @@ export default {
   ModelGltf,
   ModelObj,
   ModelDraco,
-  ModelPcd
+  ModelPcd,
+  MarkdownViewer
 };
 
 export {
@@ -45,5 +48,6 @@ export {
   ModelGltf,
   ModelObj,
   ModelDraco,
-  ModelPcd
+  ModelPcd,
+  MarkdownViewer
 };
