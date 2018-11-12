@@ -7,7 +7,7 @@
 <script>
 import "github-markdown-css/github-markdown.css";
 var fs = require("fs");
-var markdown = require("markdown").markdown;
+var marked = require("marked");
 
 export default {
   name: "markdown-viewer",
@@ -34,12 +34,9 @@ export default {
         if (err) {
           return console.error(err);
         }
-        that.docContent = markdown.toHTML(data.toString());
+        that.docContent = marked(data.toString());
       });
     },
-    close(){
-
-    }
   },
   mounted() {
     this.reload();
@@ -54,12 +51,5 @@ export default {
   justify-content: center;
   align-items: Center;
   overflow: auto;
-}
-
-.close{
-  position: absolute; 
-  right: 10px;
-  margin: 10px;
-  z-index: 1000;
 }
 </style>
