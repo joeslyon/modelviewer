@@ -49,6 +49,7 @@ import "github-markdown-css/github-markdown.css";
 const { BrowserWindow } = require("electron");
 var fs = require("fs");
 var markdown = require("markdown").markdown;
+var path = require("path");
 
 export default {
   data() {
@@ -109,7 +110,11 @@ export default {
   mounted() {
     var that = this;
     this.$nextTick(function() {
-      fs.readFile("static/help.md", function(err, data) {
+      var filePath = "help/help.md";
+      if (process.env.NODE_ENV !== "development") {
+        filePath = path.join("resources",filePath);
+      }
+      fs.readFile(filePath, function(err, data) {
         if (err) {
           return console.error(err);
         }

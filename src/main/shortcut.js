@@ -15,6 +15,13 @@ export function registerShortcut() {
     win.webContents.toggleDevTools();
   });
 
+  doRegister("F11", function() {
+    let win = BrowserWindow.getFocusedWindow();
+    if (!win) return;
+    var flag = win.isFullScreen();
+    win.setFullScreen(!flag);
+  });
+
   doRegister("F5", function() {
     let win = BrowserWindow.getFocusedWindow();
     if (!win) return;

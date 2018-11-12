@@ -1,6 +1,6 @@
 {
   "name": "modelviewer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "iamzouliang@gmail.com",
   "description": "dragable model viewer",
   "license": "MIT",
@@ -19,6 +19,9 @@
   "build": {
     "productName": "modelviewer",
     "appId": "com.example.modelviewer",
+    "extraResources": [
+      "help"
+    ],
     "directories": {
       "output": "build"
     },
