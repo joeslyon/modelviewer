@@ -39,12 +39,13 @@
       </el-button>
     </div>
     <el-dialog :visible.sync="dialogFormVisible" width="80%">
-      <div v-html="docContent"></div>
+      <div v-html="docContent" class="markdown-body"></div>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import "github-markdown-css/github-markdown.css";
 const { BrowserWindow } = require("electron");
 var fs = require("fs");
 var markdown = require("markdown").markdown;
@@ -121,7 +122,6 @@ export default {
 
 <style lang="scss" scoped>
 @import url(../../assets/iconfont/iconfont.css);
-
 .header-view {
   align-items: center;
   justify-content: space-between;

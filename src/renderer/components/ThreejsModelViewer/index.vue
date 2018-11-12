@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="header" ondragstart="return false;">
-      <h1>Three glTF Viewer</h1>
+      <h1>Three.js Model Viewer</h1>
     </div>
     <model-container :fileInfo="fileInfo" @importFile="validateExt" v-if="showCanvas"></model-container>
     <div v-else class="drop-container">
