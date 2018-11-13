@@ -16,6 +16,7 @@
 import HeaderView from "@/components/Header";
 import ConfigContainer from "@/components/ConfigContainer";
 import ThreejsModelViewer from "@/components/ThreejsModelViewer";
+
 const { BrowserWindow } = require("electron");
 
 export default {

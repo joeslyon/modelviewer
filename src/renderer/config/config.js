@@ -1,7 +1,7 @@
 export const filters = [
   {
     name: "所有支持类型",
-    extensions: ["gltf", "glb", "dae", "obj", "stl", "ply", "pcd","md"]
+    extensions: ["gltf", "glb", "dae", "obj", "stl", "ply", "pcd","md","pdf"]
   },
   { name: "glTF", extensions: ["gltf"] },
   { name: "glTF Binary", extensions: ["glb"] },
@@ -10,10 +10,11 @@ export const filters = [
   { name: "STL Model", extensions: ["stl"] },
   { name: "PLY Model", extensions: ["ply"] },
   { name: "Point Cloud Data", extensions: ["pcd"] },
-  { name: "MarkDown", extensions: ["md"] }
+  { name: "MarkDown", extensions: ["md"] },
+  { name: "Portable Document Format", extensions: ["pdf"] }
 ];
 
-export const hideModelViewerTitle = [".md"];
+export const hideModelViewerTitle = [".md",".pdf"];
 
 export const supportExt = [
   ".gltf",
@@ -23,5 +24,6 @@ export const supportExt = [
   ".stl",
   ".ply",
   ".pcd",
-  ".md"
+  ".md",
+  ".pdf"
 ];

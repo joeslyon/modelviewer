@@ -1,19 +1,23 @@
 <template>
-    <div>
-      <div style="width:80px;height:80px;position: fixed;margin-top:5px;right: 5px;">
-        <el-button @click="closeContainer">关闭</el-button>
-      </div>
-        <markdown-viewer v-if="type == 'help'" :src="filePath"></markdown-viewer>
-        <!-- <markdown-viewer v-else-if="type == 'history'" :src="filePath"></markdown-viewer>
-        <markdown-viewer v-else-if="type == 'setting'" :src="filePath"></markdown-viewer> -->
+  <div style="width:100%;height:100%;padding:0;margin:0">
+    <div style="width:80px;height:80px;position:fixed;margin-top:5px;right:5px;">
+      <el-button @click="closeContainer">关闭</el-button>
     </div>
+    <markdown-viewer v-if="type == 'help'" :src="filePath"></markdown-viewer>
+    <!-- <markdown-viewer v-else-if="type == 'history'" :src="filePath"></markdown-viewer>
+        <markdown-viewer v-else-if="type == 'setting'" :src="filePath"></markdown-viewer> -->
+    <map-shaper v-else-if="type == 'mapshaper'"></map-shaper>
+    <slot v-else></slot>
+  </div>
 </template>
 
 <script>
 import { MarkdownViewer } from "./ThreejsModelViewer/VueModel";
+import MapShaper from "@/components/MapShaper";
+
 var path = require("path");
 export default {
-  components: { MarkdownViewer },
+  components: { MarkdownViewer, MapShaper },
   props: {
     appData: {
       type: Object,
@@ -36,8 +40,8 @@ export default {
       this.data = val.data;
     }
   },
-  methods:{
-    closeContainer(){
+  methods: {
+    closeContainer() {
       this.$emit("close");
     }
   },
