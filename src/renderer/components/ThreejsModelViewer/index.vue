@@ -3,10 +3,7 @@
     <div class="header" v-show="showTitle" ondragstart="return false;">
       <h1>Three.js Model Viewer</h1>
     </div>
-    <config-container v-if="appConfig">
-      <button @click="test">ceshi</button>
-    </config-container>
-    <model-container :fileInfo="fileInfo" @importFile="validateExt" v-else-if="showCanvas"></model-container>
+    <model-container :fileInfo="fileInfo" @importFile="validateExt" v-if="showCanvas"></model-container>
     <div v-else class="drop-container">
       <div @drop="dropFile" @dragover="dragOver" @dragleave="dragLeave" :class="['drop-area','dragTarget',{'hover':isHover}]">
         <p>拖拽文件到这里，或者</p>
@@ -18,7 +15,6 @@
 
 <script>
 import ModelContainer from "./ModelContainer";
-import ConfigContainer from "./ConfigContainer";
 import { filters, supportExt, hideModelViewerTitle } from "@/config/config";
 const { BrowserWindow } = require("electron");
 var pathHelper = require("path");
@@ -27,11 +23,10 @@ let dragEvent = false;
 let openFileEvent = false;
 
 export default {
-  components: { ModelContainer, ConfigContainer },
+  components: { ModelContainer },
   data() {
     return {
       showCanvas: false,
-      appConfig: false,
       isHover: false,
       showTitle: true,
       fileInfo: {}
@@ -43,17 +38,6 @@ export default {
         filters
       });
     },
-    test() {
-      this.appConfig = !this.appConfig;
-      if (
-        this.appConfig ||
-        (this.showCanvas && hideModelViewerTitle.includes(this.fileInfo.ext))
-      ) {
-        this.showTitle = false;
-      } else {
-        this.showTitle = true;
-      }
-    },
     registOpenFile() {
       let that = this;
       if (openFileEvent) return;
@@ -63,15 +47,9 @@ export default {
           that.validateExt(data[0]);
         }
       });
-      that.$electron.ipcRenderer.on("app-data", (event, data) => {
-        that.appConfig = true;
-        that.showTitle = false;
-      });
     },
     validateExt(path) {
-      console.log(path);
       let _ext = pathHelper.extname(path);
-
       if (!supportExt.includes(_ext)) {
         this.info("指定文件格式不支持");
         return;

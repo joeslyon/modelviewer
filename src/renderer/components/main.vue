@@ -5,27 +5,33 @@
         <header-view @app-data="appEvent"></header-view>
       </el-header>
       <el-main class="main">
-        <threejs-model-viewer></threejs-model-viewer>
+        <config-container v-show="appConfig" :appData="appData" @close="appConfig = false">
+        </config-container>
+        <threejs-model-viewer :class="[{'showViewer':appConfig}]"></threejs-model-viewer>
       </el-main>
     </el-container>
   </div>
 </template>
 <script>
 import HeaderView from "@/components/Header";
+import ConfigContainer from "@/components/ConfigContainer";
 import ThreejsModelViewer from "@/components/ThreejsModelViewer";
 const { BrowserWindow } = require("electron");
 
 export default {
   data() {
     return {
-      fullscreen: false
+      fullscreen: false,
+      appConfig: false,
+      appData: {}
     };
   },
-  components: { HeaderView, ThreejsModelViewer },
+  components: { HeaderView, ConfigContainer, ThreejsModelViewer },
   methods: {
     appEvent(data) {
-      let win = this.$electron.remote.getCurrentWindow();
-      win.webContents.send("app-data", data);
+      if (!data) return;
+      this.appConfig = true;
+      this.appData = data;
     }
   },
   created() {
@@ -77,6 +83,10 @@ export default {
 }
 
 .fullscreen {
+  display: none;
+}
+
+.showViewer {
   display: none;
 }
 </style>
