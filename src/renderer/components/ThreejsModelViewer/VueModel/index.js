@@ -4,7 +4,6 @@ import ModelCollada from "./model-collada";
 import ModelGltf from "./model-gltf";
 import ModelPcd from "./model-pcd";
 import ModelObj from "./model-obj";
-import ModelDraco from "./model-draco";
 import MarkdownViewer from "./markdown-viewer";
 
 const components = [
@@ -13,7 +12,6 @@ const components = [
   ModelCollada,
   ModelGltf,
   ModelObj,
-  ModelDraco,
   ModelPcd,
   MarkdownViewer
 ];
@@ -35,7 +33,6 @@ export default {
   ModelCollada,
   ModelGltf,
   ModelObj,
-  ModelDraco,
   ModelPcd,
   MarkdownViewer
 };

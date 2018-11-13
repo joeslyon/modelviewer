@@ -6,35 +6,18 @@
     <model-ply v-else-if="current == '.ply'" :src="filePath" @on-load="onload"></model-ply>
     <model-pcd v-else-if="current == '.pcd'" :src="filePath" @on-load="onload"></model-pcd>
     <model-obj v-else-if="current == '.obj'" :src="filePath" @on-load="onload"></model-obj>
-    <!-- <model-draco v-else-if="current == '.drc'" :src="filePath" @on-load="onload"></model-draco> -->
     <markdown-viewer v-else-if="current == '.md'" :src="filePath"></markdown-viewer>
   </div>
 </template>
 
 <script>
+import Vue from "vue";
 const { BrowserWindow } = require("electron");
-import {
-  ModelStl,
-  ModelPly,
-  ModelCollada,
-  ModelGltf,
-  ModelObj,
-  ModelDraco,
-  ModelPcd,
-  MarkdownViewer
-} from "./VueModel";
+import VueModel from "./VueModel";
+
+Vue.use(VueModel);
 
 export default {
-  components: {
-    ModelStl,
-    ModelPly,
-    ModelCollada,
-    ModelGltf,
-    ModelObj,
-    ModelDraco,
-    ModelPcd,
-    MarkdownViewer
-  },
   props: ["fileInfo"],
   data() {
     return {
