@@ -55,14 +55,14 @@ export default {
     if (win && win.isFullScreen()) {
       this.fullscreen = true;
     }
+    //阻止打开<a>标签链接的默认行为，改用外部浏览器打开
     this.$nextTick(function() {
       document.addEventListener("click", function(event) {
-        event.preventDefault();
-        if (event.path && event.path[0]) {
-          var a = event.path[0];
-          if (a.href) {
-            shell.openExternal(a.href);
-          }
+        let a = event.toElement;
+        let link = a.href || a.parentElement.href;       
+        if (link) {
+          event.preventDefault();
+          shell.openExternal(link);
         }
       });
     });
