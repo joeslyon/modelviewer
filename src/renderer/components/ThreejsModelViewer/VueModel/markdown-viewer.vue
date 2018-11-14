@@ -6,8 +6,18 @@
 
 <script>
 import "github-markdown-css/github-markdown.css";
-var fs = require("fs");
-var marked = require("marked");
+import "emoji-data-css/files/gl-32-emoji.css";
+const fs = require("fs");
+const marked = require("marked");
+const emoji = require("node-emoji");
+
+const emoji_format = function(code, name) {
+  return '<div class="gl gl-' + name + '"></div>';
+};
+
+const onMissing = function(name) {
+  return ":"+name+":";
+};
 
 export default {
   name: "markdown-viewer",
@@ -34,9 +44,10 @@ export default {
         if (err) {
           return console.error(err);
         }
-        that.docContent = marked(data.toString());
+        var content = marked(data.toString());
+        that.docContent = emoji.emojify(content, onMissing, emoji_format);
       });
-    },
+    }
   },
   mounted() {
     this.reload();
