@@ -1,6 +1,6 @@
 # modelviewer
 
-> dragable model viewer
+> draggable model viewer
 
 #### Build Setup
 

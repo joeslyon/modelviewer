@@ -1,7 +1,8 @@
 <template>
   <div style="width:100%;height:100%;padding:0;margin:0">
-    <div style="width:80px;height:80px;position:fixed;margin-top:5px;right:5px;">
-      <el-button @click="closeContainer">关闭</el-button>
+    <div class="closeBtnContainer">
+      <el-button type="info" icon="el-icon-close" class="closeBtn" @click="closeContainer" circle>
+      </el-button>
     </div>
     <markdown-viewer v-if="type == 'help'" :src="filePath"></markdown-viewer>
     <!-- <markdown-viewer v-else-if="type == 'history'" :src="filePath"></markdown-viewer>
@@ -57,3 +58,18 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.closeBtn {
+  background-color: rgba(68, 165, 230, 0.301);
+  margin: 15px;
+}
+
+.closeBtnContainer {
+  position: fixed;
+  margin-top: 5px;
+  right: 5px;
+}
+
+</style>
+

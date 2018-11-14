@@ -17,7 +17,7 @@ import HeaderView from "@/components/Header";
 import ConfigContainer from "@/components/ConfigContainer";
 import ThreejsModelViewer from "@/components/ThreejsModelViewer";
 
-const { BrowserWindow } = require("electron");
+const { BrowserWindow, shell } = require("electron");
 
 export default {
   data() {
@@ -55,6 +55,17 @@ export default {
     if (win && win.isFullScreen()) {
       this.fullscreen = true;
     }
+    this.$nextTick(function() {
+      document.addEventListener("click", function(event) {
+        event.preventDefault();
+        if (event.path && event.path[0]) {
+          var a = event.path[0];
+          if (a.href) {
+            shell.openExternal(a.href);
+          }
+        }
+      });
+    });
   }
 };
 </script>
