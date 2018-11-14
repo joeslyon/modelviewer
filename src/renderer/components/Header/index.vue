@@ -4,29 +4,9 @@
       <img width="32px" ondragstart="return false;" style="margin-left:2px;margin-top:2px" src="@/assets/icon.png" />
     </div>
     <div class="right div-inline">
-      <el-button @click="help" class="no-drag" size="mini" type="text">
-        <el-tooltip effect="dark" content="使用说明" placement="bottom">
-          <i class="btn el-icon-question"></i>
-        </el-tooltip>
-      </el-button>
-      <el-button @click="history" class="no-drag" size="mini" type="text">
-        <el-tooltip effect="dark" content="历史记录" placement="bottom">
-          <i class="btn el-icon-document"></i>
-        </el-tooltip>
-      </el-button>
-      <el-button @click="setting" class="no-drag" size="mini" type="text">
-        <el-tooltip effect="dark" content="设置" placement="bottom">
-          <i class="btn el-icon-setting"></i>
-        </el-tooltip>
-      </el-button>
-      <el-button @click="refresh" class="no-drag" size="mini" type="text">
-        <el-tooltip effect="dark" content="刷新页面" placement="bottom">
-          <i class="btn my-el-icon-reload"></i>
-        </el-tooltip>
-      </el-button>
-      <el-button @click="minimize" class="no-drag" size="mini" type="text">
-        <el-tooltip effect="dark" content="最小化" placement="bottom">
-          <i class="btn el-icon-minus"></i>
+      <el-button v-for="tool in right" :key="tool.id" @click="clickMethod(tool.func)" class="no-drag" size="mini" type="text">
+        <el-tooltip effect="dark" :content="tool.desc" placement="bottom">
+          <i :class="tool.icon"></i>
         </el-tooltip>
       </el-button>
       <el-button @click="maximum" class="no-drag" size="mini" type="text">
@@ -37,7 +17,7 @@
           <i class="btn my-el-icon-winrestore"></i>
         </el-tooltip>
       </el-button>
-      <el-button @click="close" class="no-drag hover-color" size="mini" type="text">
+      <el-button @click="close" class="no-drag" size="mini" type="text">
         <el-tooltip effect="dark" content="关闭应用" placement="bottom">
           <i class="btn el-icon-close"></i>
         </el-tooltip>
@@ -52,7 +32,53 @@ const { BrowserWindow } = require("electron");
 export default {
   data() {
     return {
-      win_normal: true
+      win_normal: true,
+      left: [
+        {
+          id: "0",
+          func: "mapshaper",
+          icon: "btn el-icon-question",
+          desc: "mapshaper"
+        }
+      ],
+      right: [
+        {
+          id: "0",
+          func: "help",
+          icon: "btn el-icon-question",
+          desc: "使用说明"
+        },
+        {
+          id: "1",
+          func: "history",
+          icon: "btn el-icon-document",
+          desc: "历史记录"
+        },
+        {
+          id: "2",
+          func: "setting",
+          icon: "btn el-icon-setting",
+          desc: "设置"
+        },
+        {
+          id: "3",
+          func: "mapshaper",
+          icon: "btn el-icon-menu",
+          desc: "MapShaper"
+        },
+        {
+          id: "4",
+          func: "refresh",
+          icon: "btn my-el-icon-reload",
+          desc: "刷新页面"
+        },
+        {
+          id: "5",
+          func: "minimize",
+          icon: "btn el-icon-minus",
+          desc: "最小化"
+        }
+      ]
     };
   },
   props: {
@@ -62,6 +88,9 @@ export default {
     }
   },
   methods: {
+    clickMethod(name) {
+      this.$options.methods[name].apply(this);
+    },
     close() {
       this.$confirm("此操作将退出应用, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -90,6 +119,9 @@ export default {
     },
     setting() {
       this.$emit("app-data", { type: "setting" });
+    },
+    mapshaper() {
+      this.$emit("app-data", { type: "mapshaper" });
     }
   },
   created() {
@@ -107,6 +139,12 @@ export default {
           break;
       }
     });
+  },
+  mounted() {
+    let win = this.$electron.remote.getCurrentWindow();
+    if (win && win.isMaximized()) {
+      this.win_normal = false;
+    }
   }
 };
 </script>
@@ -136,6 +174,13 @@ export default {
   .left {
     height: 100%;
     float: left;
+    .btn {
+      font-size: 17px;
+      color: #333;
+    }
+    .btn:hover {
+      color: #31c27c;
+    }
   }
 }
 
