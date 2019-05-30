@@ -4,6 +4,9 @@
 ---
 >拖拽式桌面端模型查看器（基于THREEJS，支持obj/glTF/DAE/pcd）;集成了mapshaper；支持查看MarkDown；不定期扩展更新更多。。
 
+![模型查看工具](./figure/viewer.png)
+![gltf](./figure/gltf.png)
+![MapShpaer](./figure/mapshaper.png)
 
 #### Build Setup
 

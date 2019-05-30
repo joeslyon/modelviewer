@@ -67,8 +67,8 @@ export default {
 
 .closeBtnContainer {
   position: fixed;
-  margin-top: 5px;
-  right: 5px;
+  margin-top: 35px;
+  right: 35px;
 }
 
 </style>

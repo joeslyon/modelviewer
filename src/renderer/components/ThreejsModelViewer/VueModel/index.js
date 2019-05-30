@@ -44,7 +44,6 @@ export {
   ModelCollada,
   ModelGltf,
   ModelObj,
-  ModelDraco,
   ModelPcd,
   MarkdownViewer
 };
