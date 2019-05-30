@@ -1,6 +1,9 @@
 # modelviewer
 
-> draggable model viewer
+工具描述
+---
+>拖拽式桌面端模型查看器（基于THREEJS，支持obj/glTF/DAE/pcd）;集成了mapshaper；支持查看MarkDown；不定期扩展更新更多。。
+
 
 #### Build Setup
 
