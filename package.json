@@ -57,7 +57,7 @@
     "element-ui": "^2.4.9",
     "emoji-data-css": "^1.0.1",
     "github-markdown-css": "^2.10.0",
-    "marked": "^0.5.1",
+    "marked": "^0.7.0",
     "node-emoji": "^1.8.1",
     "pdfjs-dist": "^2.0.943",
     "three": "^0.98.0",
